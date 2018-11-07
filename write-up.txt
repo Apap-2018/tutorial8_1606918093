@@ -1,0 +1,28 @@
+Write-up (Khusus Kelas C)
+
+Buat sebuah file write-up yang berisikan jawaban dari pertanyaan berikut:
+- Apa fungsi BCryptPasswordEncoder?
+Jawab : BCrypt adalah salah satu mekanisme pembungkusan password/kata sandi dengan menggunakan mekanisme
+	 hash yaitu suatu algoritma yang bila dikombinasikan dengan suatu value maka akan secara unik menghasilkan
+	 kode lain yang dapat membungkus kata sandi tsb (enkripsi) sedemikian hingga bila "bungkus" tersebut dibuka 
+	 atau (decrypt) maka akan mengembalikan nilai asli kata sandi. Artinya, BCryptPasswordEncoder adalah suatu metode
+	 pengamanan kata sandi yang memanfaatkan fungsi hashing pada penerapannya, sehingga dapat meminimalisir beraneka cyber crime
+	 seperti man-in-the-middle, hacker, dsb. 
+	 
+- Apa yang dilakukan baris berikut? (Method pada kelasUserDetailsServiceImpl.java)
+		"Set<GrantedAuthority> grantedAuthorities = new HashSet<GrantedAuthority>();
+		grantedAuthorities.add(new SimpleGrantedAuthority(user.getRole()));"
+Jawab : Berdasarkan literatur yang saya baca di : https://www.baeldung.com/spring-security-granted-authority-vs-role
+	Dalam sistem keamanan/security Spring memperkenalkan beberapa role, salah satu diantaranya role sebagai GrantedAuthority
+. 	Dengan adanya grantedAuthorities ini, seorang pengguna bisa mendapatkan hak istimewa individu (hal-hal apa saja yang boleh dan tidak boleh
+	dilakukan oleh individu di dalam sistem), contohnya dapat mencakup READ_AUTHORITY, WRITE_PRIVILEGE, dsb. 
+	
+	Pada baris kode "Set<>.....", kita memberikan suatu GrantedAuthority kepada pengguna, dimana GrantedAuthority tsb 
+	nantinya akan dibungkus dengan algo hash. Kemudian, kita simpan kode GrantedAuthority yang telah dibungkus dalam 
+	bentuk hash-code tsb. Nantinya, jika pengguna ingin login, akan dites menggunakan grantedAuthorities ini. Ketika katasandi 
+	dimasukkan --kemudian di enkripsi lalu didekripsi. Jika hasil dekripsi sesuai, maka itu berarti password yang dibuat sudah sesuai dan pengguna 
+	bisa mengakses sistem sesuai autoritas apa yang ia miliki berdasarkan rolenya pada sistem.
+	
+	Pada baris selanjutnya grantedAuthorities(authoritas) yang telah kita miliki kemudian akan didaftarkan secara unik sesuai role-nya. 
+	nama authoritas yang sama tidak akan ditambahkan lagi. 
+		
